@@ -39,10 +39,11 @@ export default {
   --charcoal: #282828;
   --success-green: #27AE60;
   --error-red: #E74C3C;
-  --text-normal: #34495E;
+  --text-normal: #202122;
   --text-deep: #000;
   --text-light: #666;
   --yellow: #ffc403;
+  --blue: #0066ff;
   --bright-red: #cc2131;
   --oynx: #121212;
   --shadow: 0px 2px 2px 2px var(--soft-gray);
@@ -94,7 +95,6 @@ body{
 
 #shell{
   width: calc(100% - 60px);
-  padding: 30px;
   min-height: 100vh;
   background: var(--cool-white);
 }
