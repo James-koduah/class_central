@@ -1,10 +1,20 @@
 <template>
-  <div id="h"></div>
+  <main id="main">
+    <SideBar />
+    <div id="shell">
+      <RouterView />
+    </div>
+  </main>
 </template>
 
 <script>
+import SideBar from './components/nav/SideBar.vue';
+
 export default {
   name: 'App',
+  components: {
+    SideBar
+  }
 }
 </script>
 
@@ -15,23 +25,27 @@ export default {
     font-weight: 100 900;
     font-style: normal;
 }
+
 *{
   padding: 0;
   margin: 0
 }
+
 :root{
   --cool-white: #fafafc;
   --white: #ffffff;
   --deep-blue: #202531;
   --soft-gray: #e3e8e9;
-  --charcoal: #354555;
+  --charcoal: #282828;
   --success-green: #27AE60;
   --error-red: #E74C3C;
-  --text-normal: #34495E;
+  --text-normal: #202122;
   --text-deep: #000;
   --text-light: #666;
-  --mtn: #ffc403;
-  --vodafone: #cc2131;
+  --yellow: #ffc403;
+  --blue: #0066ff;
+  --bright-red: #cc2131;
+  --oynx: #121212;
   --shadow: 0px 2px 2px 2px var(--soft-gray);
 
 }
@@ -69,8 +83,9 @@ body{
   color: var(--text-normal);
   overflow-x: hidden;
 }
-body::-webkit-scrollbar{
-  width: 0;
+#main{
+  width: 100%;
+  display: flex;
 }
 #app{
   width: 100vw;
@@ -80,19 +95,8 @@ body::-webkit-scrollbar{
 
 #shell{
   width: calc(100% - 60px);
-  padding: 30px;
   min-height: 100vh;
   background: var(--cool-white);
 }
 
-.actionButton{
-  padding: 8px 16px;
-  border-radius: 15px;
-  border: 1px var(--text-deep) solid;
-  transition: .6s;
-}
-.actionButton:hover{
-  background-color: var(--text-deep);
-  color: var(--cool-white)
-}
 </style>
