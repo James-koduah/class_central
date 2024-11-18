@@ -6,7 +6,7 @@ Follow these steps to install dependencies and setup the environment. Run these 
 
 
 ### Postgres Docker Container
-About 100mb
+About 100mb of resources. Install docker-compose if not available
 ```
 docker-compose up -d
 ```
