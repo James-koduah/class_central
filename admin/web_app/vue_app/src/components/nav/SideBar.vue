@@ -6,21 +6,13 @@
                 <div class="miniItem" :class="{active: currentRoute === '/'}" @click="this.$router.push('/')"><SvgIcons icon="dashboard" color="white" /></div>
             </div>
             <div class="group">
-                <div class="miniItem" :class="{active: currentRoute.startsWith('/courses')}" @click="this.$router.push('/courses')" ><SvgIcons icon="book" color="white" /></div>
-                <div class="miniItem" :class="{active: currentRoute.startsWith('/assignments')}" @click="this.$router.push('/assignments')" ><SvgIcons icon="homework" color="white" /></div>
-                <div class="miniItem" :class="{active: currentRoute.startsWith('/results')}" @click="this.$router.push('/results')" ><SvgIcons icon="studentResults" color="white" /></div>
-            </div>
-            <div class="group">
-                <div class="miniItem" :class="{active: currentRoute.startsWith('/calender')}" @click="this.$router.push('/calender')" ><SvgIcons icon="calender" color="white" /></div>
-                <div class="miniItem" :class="{active: currentRoute.startsWith('/events')}" @click="this.$router.push('/events')" ><SvgIcons icon="calenderEvent" color="white" /></div>
-                <div class="miniItem" :class="{active: currentRoute.startsWith('/messages')}" @click="this.$router.push('/messages')" ><SvgIcons icon="message" color="white" /></div>
-            </div>
+                <div class="miniItem" :class="{active: currentRoute.startsWith('/classrooms')}" @click="this.$router.push('/classrooms')" ><SvgIcons icon="school2" color="white" /></div>
+                <div class="miniItem" :class="{active: currentRoute.startsWith('/teachers')}" @click="this.$router.push('/teachers')" ><SvgIcons icon="educators" color="white" /></div>
+                <div class="miniItem" :class="{active: currentRoute.startsWith('/students')}" @click="this.$router.push('/students')" ><SvgIcons icon="children" color="white" /></div>
+                </div>
             <div class="group">
                 <div class="miniItem" :class="{active: currentRoute.startsWith('/profile')}" @click="this.$router.push('/profile')" ><SvgIcons icon="person" color="white" /></div>
                 <div class="miniItem" :class="{active: currentRoute.startsWith('/settings')}" @click="this.$router.push('/settings')" ><SvgIcons icon="settings" color="white" /></div>
-            </div>
-            <div class="group">
-                    <div class="miniItem" :class="{active: currentRoute.startsWith('/school')}" @click="this.$router.push('/school')" ><SvgIcons icon="school" color="white" /></div>
             </div>
 
         </div>
@@ -30,21 +22,13 @@
                 <div class="maxItem" :class="{active: currentRoute === '/'}" @click="this.$router.push('/')"> <SvgIcons icon="dashboard" color="white" /> <p>Dashboard</p></div>
             </div>
             <div class="group">
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/courses')}" @click="this.$router.push('/courses')"> <SvgIcons icon="book" color="white" /><p>Courses</p></div>
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/assignments')}" @click="this.$router.push('/assignments')"> <SvgIcons icon="homework" color="white" /><p>Assignments</p></div>
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/results')}" @click="this.$router.push('/results')"> <SvgIcons icon="studentResults" color="white" /><p>Results</p></div>
-            </div>
-            <div class="group">
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/calender')}" @click="this.$router.push('/calender')"> <SvgIcons icon="calender" color="white" /><p>Calender</p></div>
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/events')}" @click="this.$router.push('/events')"> <SvgIcons icon="calenderEvent" color="white" /><p>Events</p></div>
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/messages')}" @click="this.$router.push('/messages')"> <SvgIcons icon="message" color="white" /><p>Messages</p></div>
-            </div>
+                <div class="maxItem" :class="{active: currentRoute.startsWith('/classrooms')}" @click="this.$router.push('/classrooms')"> <SvgIcons icon="school2" color="white" /><p>Manage Classrooms</p></div>
+                <div class="maxItem" :class="{active: currentRoute.startsWith('/teachers')}" @click="this.$router.push('/teachers')"> <SvgIcons icon="educators" color="white" /><p>Manage Teachers</p></div>
+                <div class="maxItem" :class="{active: currentRoute.startsWith('/students')}" @click="this.$router.push('/students')"> <SvgIcons icon="children" color="white" /><p>Manage Students</p></div>
+                </div>
             <div class="group">
                 <div class="maxItem" :class="{active: currentRoute.startsWith('/profile')}" @click="this.$router.push('/profile')"> <SvgIcons icon="person" color="white" /><p>Profile</p></div>
                 <div class="maxItem" :class="{active: currentRoute.startsWith('/settings')}" @click="this.$router.push('/settings')"> <SvgIcons icon="settings" color="white" /><p>Settings</p></div>
-            </div>
-            <div class="group">
-                <div class="maxItem" :class="{active: currentRoute.startsWith('/school')}" @click="this.$router.push('/school')"> <SvgIcons icon="school" color="white" /><p>School</p></div>
             </div>
         </div>
     </div>
@@ -77,6 +61,7 @@ export default {
     top: 0;
     width: fit-content;
     min-width: 60px;
+    background: var(--oynx);
     color: var(--cool-white);
     flex-shrink: 0;
     z-index: 100;

@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import os
 load_dotenv()
 from flask import Flask
 from flask_cors import CORS
@@ -11,6 +12,8 @@ from db_engine.classroom import Classroom
 from db_engine.control import Control
 
 app = Flask(__name__)
+
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_KEY')
 jwt = JWTManager(app)
 CORS(app)
 

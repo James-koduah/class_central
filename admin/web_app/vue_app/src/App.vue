@@ -37,6 +37,7 @@ export default {
   --deep-blue: #202531;
   --soft-gray: #e3e8e9;
   --charcoal: #282828;
+  --slate-black: #1b1b1b;
   --success-green: #27AE60;
   --error-red: #E74C3C;
   --text-normal: #202122;
@@ -56,6 +57,11 @@ input:focus, textarea:focus{
 input, textarea, button{
 	border: none;
 	color: inherit;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  width: 96%;
+  padding: 0 2%;
+  height: 35px;
 }
 button, a{
     cursor: pointer;
@@ -99,4 +105,20 @@ body{
   background: var(--cool-white);
 }
 
+.blank{
+  width: 90%;
+  background: var(--slate-black);
+  color: var(--cool-white);
+  padding: 100px 5% 200px 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.blank header{
+    font-size: 7em;
+}
+.blank input{
+  margin-top: 35px;
+  width: 60%;
+}
 </style>
