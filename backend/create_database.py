@@ -10,7 +10,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 
-def create_database():
+def create_app_database():
     engine = create_engine(DATABASE_URL)
 
     # Check if the database exists, create it if it doesn't
@@ -25,4 +25,4 @@ def create_database():
 
 
 if __name__ == "__main__":
-    create_database()
+    create_app_database()

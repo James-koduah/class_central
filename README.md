@@ -2,7 +2,7 @@
 
 
 ### Development Environment Setup
-Follow these steps to install dependencies and setup the environment. Run these commands from the root of this project
+Follow these steps to install dependencies and setup the development environment. Run these commands from the root of this project
 
 
 ### Postgres Docker Container
@@ -29,4 +29,23 @@ pip install -r requirements.txt
 ```
 
 
+### Vue Apps
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
 
