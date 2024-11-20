@@ -30,6 +30,7 @@ pip install -r requirements.txt
 
 
 ### Vue Apps
+In each vue project/directory, run these commands
 ```
 npm install
 ```
