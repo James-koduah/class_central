@@ -12,7 +12,7 @@ docker-compose up -d
 ```
 
 
-### Python Environment
+### Backend Python Environment
 
 #### Linux/Mac
 ```

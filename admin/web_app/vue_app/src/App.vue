@@ -54,7 +54,7 @@ export default {
 input:focus, textarea:focus{
     outline: none;
 }
-input, textarea, button{
+input, textarea{
 	border: none;
 	color: inherit;
   border-radius: 8px;
@@ -67,7 +67,9 @@ button, a{
     cursor: pointer;
 }
 button{
-  background: inherit
+  background: inherit;
+	border: none;
+	color: inherit;
 }
 a{
     text-decoration: none;
@@ -120,5 +122,18 @@ body{
 .blank input{
   margin-top: 35px;
   width: 60%;
+}
+
+
+.goBack{
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  --svg-width: 25px;
+  --svg-height: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 2px 2px var(--soft-gray);
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>

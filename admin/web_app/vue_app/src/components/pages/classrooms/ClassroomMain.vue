@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="action addClassroom">
+                <div class="action addClassroom" @click="openPopup('createClassroom', {})">
                     <p>Add New Classroom</p>
                     <SvgIcons icon="add" color="#000" />
                 </div>
@@ -49,37 +49,51 @@
                     </thead>
                     <tbody>
                         <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
-                            <td>
-                                <input type="checkbox" v-model="selectedRows[rowIndex]" />
-                            </td>
-                            <td v-for="(column, colIndex) in row" :key="colIndex">{{ column }}</td>
-                            <td>
-                                <div class="rowActions"><SvgIcons icon="menu2" color='#000' /></div>
-                            </td>
+                            <td> <input type="checkbox" v-model="selectedRows[rowIndex]" /></td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.students }}</td>
+                            <td>{{ row.homeroom_teacher ? row.homeroom_teacher : '-' }}</td>
+                            <td>{{ row.courses }}</td>
+                            <td><div class="rowActions" @click="openPopup('updateClassroom', {id: row.id})"><SvgIcons icon="menu2" color='#000' /></div></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <popup :isVisible="isPopupVisible" :currentComponent="popupComponent" :componentData="popupProps"
+            @update:isVisible="isPopupVisible = $event" 
+        />
     </div>
 </template>
 <script>
+import Popup from '@/components/utils/Popup.vue';
 import SvgIcons from '@/components/utils/SvgIcons.vue';
+import { useAppStore } from '@/store/appStore';
+import UpdateClassroomPage from './updateclassroom/UpdateClassroomPage.vue';
+import AddClassroomPage from './addclassroom/AddClassroomPage.vue';
 
 export default {
     components: {
-        SvgIcons
+        SvgIcons,
+        Popup,
+        UpdateClassroomPage,
+        AddClassroomPage
+    },
+    setup(){
+        return {
+            appStore: useAppStore()
+        }
     },
     data() {
         return {
-            headers: ['Classroom Name', 'Student No', 'Main Teacher', 'Subjects Number'],
-            rows: [
-                ['Grade 1', 28, 'Mr. Alex Ushe', 8],
-                ['Grade 2', 34, 'Mr. James Koduah', 8],
-                ['Grade 3', 22, 'Miss Diana Yusfef', 8],
-            ],
-            selectedRows: new Array(3).fill(false),
+            headers: ['Classroom Name', 'Students No', 'Homeroom Teacher', 'Subjects Number'],
+            rows: [],
+            selectedRows: [],
             selectAll: false,
+
+            isPopupVisible: false,
+            popupComponent: null,
+            popupProps: {}
         };
     },
     methods: {
@@ -87,14 +101,30 @@ export default {
             this.selectedRows = this.selectedRows.map(() => this.selectAll);
 
         },
+        async loadClassroomsData(){
+            let data = this.appStore.getClassrooms
+            if (data === false){
+                data = await this.appStore.fetchClassrooms()
+            }
+            this.rows = data
+            this.selectedRows = new Array(data.length).fill(false)
+        },
+
+        openPopup(componentName, props) {
+            if (componentName === 'updateClassroom') this.popupComponent = UpdateClassroomPage
+            if (componentName === 'createClassroom') this.popupComponent = AddClassroomPage
+            this.popupProps = props;
+            this.isPopupVisible = true;
+        },
     },
     watch: {
         selectedRows(newVal) {
             this.selectAll = newVal.every(Boolean);
         },
     },
-    computed: {
-  },
+    mounted(){
+        this.loadClassroomsData()
+    }
 
 }
 </script>
@@ -191,5 +221,6 @@ td {
     --svg-height: 15px;
     border: 1px var(--soft-gray) solid;
     margin-left: 8px;
+    cursor: pointer;
 }
 </style>
