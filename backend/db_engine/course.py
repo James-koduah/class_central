@@ -14,10 +14,17 @@ class Course(Base):
     # Relationship with classrooms
     classrooms = relationship("Classroom", secondary=classroom_course, back_populates="courses")
     
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "description": self.description,
-            "classrooms": [classroom.class_name for classroom in self.classrooms],
-        }
+    def to_dict(self, overview=False):
+        if overview:
+            return {
+                "id": self.id,
+                "name": self.name,
+                "description": self.description,
+            }
+        else:
+            return {
+                "id": self.id,
+                "name": self.name,
+                "description": self.description,
+                "classrooms": [classroom.name for classroom in self.classrooms],
+            }

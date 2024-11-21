@@ -22,6 +22,7 @@ def create_app_database():
     tables = ['Student', 'Teacher', 'Course', 'Classroom']
     for table in tables:
         Control.table_migration(table)
+    print(' * Database schema updated')
 
 
 if __name__ == "__main__":

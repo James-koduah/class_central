@@ -15,11 +15,18 @@ class Student(Base):
     # Relationship with classrooms
     classrooms = relationship("Classroom", secondary=classroom_student, back_populates="students")
     
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "email": self.email,
-            "grade_level": self.grade_level,
-            "classrooms": [classroom.class_name for classroom in self.classrooms],
-        }
+    def to_dict(self, overview=False):
+        if overview:
+            return {
+                "id": self.id,
+                "name": self.name,
+                "grade_level": self.grade_level
+            }
+        else:
+            return {
+                "id": self.id,
+                "name": self.name,
+                "email": self.email,
+                "grade_level": self.grade_level,
+                "classrooms": [classroom.name for classroom in self.classrooms],
+            }
