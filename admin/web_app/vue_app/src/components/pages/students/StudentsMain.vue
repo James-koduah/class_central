@@ -2,32 +2,16 @@
     <div>
         <div class="blank">
             <header>Students Management</header>
-            <input type="text" placeholder="Search Students Database">
+            <div class="searchBox">
+                <Search :searchFunction="appStore.studentsSearch"  @filteredItems="applyFilter" placeholder="Search Students Database" />
+            </div>
         </div>
         <div class="database">
             <div class="actions">
-                <div class="action">
-                    <p>Actions</p>
-                    <SvgIcons icon="caretDown" color="#000" />
-                    <div class="actionOptions">
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                    </div>
-                </div>
-                <div class="action">
-                    <p>Filter</p>
-                    <SvgIcons icon="filter" color="#000" />
-                    <div class="actionOptions">
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                    </div>
-                </div>
+                <DropdownButton header="Actions" :options="['Delete']" @selected="" />
+                <DropdownButton header="Sort By" icon="sort" :options="['Students No. Assending', 'Student No. Decending']" />
 
-                <div class="action addClassroom">
+                <div class="action addClassroom" @click="openPopup('createStudent', {})" >
                     <p>Add New Student</p>
                     <SvgIcons icon="add" color="#000" />
                 </div>
@@ -37,55 +21,85 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>
-                                <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" />
-                            </th>
+                            <th><input type="checkbox" v-model="selectAll" @change="toggleSelectAll" /></th>
                             <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-
-                            <th>
-                                Actions
-                            </th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
-                            <td>
-                                <input type="checkbox" v-model="selectedRows[rowIndex]" />
-                            </td>
-                            <td v-for="(column, colIndex) in row" :key="colIndex">{{ column }}</td>
-                            <td>
-                                <div class="rowActions"><SvgIcons icon="menu2" color='#000' /></div>
-                            </td>
+                            <td><input type="checkbox" v-model="selectedRows[rowIndex]" /></td>
+                            <td>{{row.name}}</td>
+                            <td>{{ row.email }}</td>
+                            <td>{{ row.guardian }}</td>
+                            <td>{{ row.phone }}</td>
+                            <td>{{ row.gender }}</td>
+                            <td><div class="rowActions"  @click="openPopup('updateStudent', {id: row.id})"><SvgIcons icon="menu2" color='#000' /></div></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <Popup :isVisible="isPopupVisible" :currentComponent="popupComponent" :componentData="popupProps"
+            @update:isVisible="isPopupVisible = $event" 
+        />
     </div>
 </template>
 <script>
+import { useAppStore } from '@/store/appStore';
 import SvgIcons from '@/components/utils/SvgIcons.vue';
+import Search from '@/components/utils/Search.vue';
+import DropdownButton from '@/components/utils/DropdownButton.vue';
+import Popup from '@/components/utils/Popup.vue';
+import AddStudentPage from './addstudent/AddStudentPage.vue';
+import UpdateStudentPage from './updatestudent/UpdateStudentPage.vue';
 
 export default {
     components: {
-        SvgIcons
+        SvgIcons,
+        Search,
+        Popup,
+        DropdownButton,
+        AddStudentPage,
+        UpdateStudentPage
+    },
+    setup(){
+        return {
+            appStore: useAppStore()
+        }
     },
     data() {
         return {
-            headers: ['Name', 'Classroom', 'Email', 'Guardian', 'Contact Number', 'Gender'],
-            rows: [
-                ['David Tompta', 'Grade 5', 'davidtompta@gmail.com', 'Mr. Tompta Joseph', '123456789', 'M'],
-                ['Abigal Darko', 'Grade 4', 'abigaldarko@gmail.com', 'Mrs. Emilia Darko', '456789123', 'F'],
-                ['Abraham Awo', 'Grade 5', 'abrahamawo@gmail.com', 'Mr. Justice Awo', '987654321', 'M'],
-            ],
-            selectedRows: new Array(3).fill(false),
+            headers: ['Name', 'Email', 'Guardian', 'Contact Number', 'Gender'],
+            rows: [],
+            selectedRows: [],
             selectAll: false,
+            isPopupVisible: false,
+            popupComponent: null,
+            popupProps: {}
         };
     },
     methods: {
         toggleSelectAll() {
             this.selectedRows = this.selectedRows.map(() => this.selectAll);
-
+        },
+        async loadStudentsData(){
+            let data = this.appStore.getStudents
+            if (data === false){
+                data = await this.appStore.fetchStudents()
+            }
+            this.rows = data
+            this.selectedRows = new Array(data.length).fill(false)
+        },
+        applyFilter(data){
+            if (data.length > 0) this.rows = data
+            else this.loadStudentsData()
+        },
+        openPopup(componentName, props) {
+            if (componentName === 'updateStudent') this.popupComponent = UpdateStudentPage
+            if (componentName === 'createStudent') this.popupComponent = AddStudentPage
+            this.popupProps = props;
+            this.isPopupVisible = true;
         },
     },
     watch: {
@@ -93,8 +107,9 @@ export default {
             this.selectAll = newVal.every(Boolean);
         },
     },
-    computed: {
-  },
+    mounted(){
+        this.loadStudentsData()
+    }
 
 }
 </script>

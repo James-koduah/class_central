@@ -18,6 +18,8 @@ export default {
     mounted(){
         if (this.data.type === 'error'){
             this.backgound = 'var(--error-red)'
+        }else if(this.data.type === 'success'){
+            this.backgound = 'var(--success-green)'
         }
     }
     

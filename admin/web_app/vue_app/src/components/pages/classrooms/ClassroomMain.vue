@@ -2,32 +2,16 @@
     <div>
         <div class="blank">
             <header>Classrooms Management</header>
-            <input type="text" placeholder="Search Classrooms">
+            <div class="searchBox">
+                <Search :searchFunction="appStore.classroomSearch" @filteredItems="applyFilter" />
+            </div>
         </div>
         <div class="database">
             <div class="actions">
-                <div class="action">
-                    <p>Actions</p>
-                    <SvgIcons icon="caretDown" color="#000" />
-                    <div class="actionOptions">
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                    </div>
-                </div>
-                <div class="action">
-                    <p>Filter</p>
-                    <SvgIcons icon="filter" color="#000" />
-                    <div class="actionOptions">
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                        <p>Option Select</p>
-                    </div>
-                </div>
+                <DropdownButton header="Actions" :options="['Delete']" @selected="" />
+                <DropdownButton header="Sort By" icon="sort" :options="['Students No. Assending', 'Student No. Decending']" />
 
-                <div class="action addClassroom" @click="openPopup('createClassroom', {})">
+                <div class="action addClassroom" @click="openPopup('createClassroom', {})" @selected="" >
                     <p>Add New Classroom</p>
                     <SvgIcons icon="add" color="#000" />
                 </div>
@@ -71,13 +55,17 @@ import SvgIcons from '@/components/utils/SvgIcons.vue';
 import { useAppStore } from '@/store/appStore';
 import UpdateClassroomPage from './updateclassroom/UpdateClassroomPage.vue';
 import AddClassroomPage from './addclassroom/AddClassroomPage.vue';
+import DropdownButton from '@/components/utils/DropdownButton.vue';
+import Search from '@/components/utils/Search.vue';
 
 export default {
     components: {
         SvgIcons,
         Popup,
         UpdateClassroomPage,
-        AddClassroomPage
+        AddClassroomPage,
+        DropdownButton,
+        Search
     },
     setup(){
         return {
@@ -99,7 +87,6 @@ export default {
     methods: {
         toggleSelectAll() {
             this.selectedRows = this.selectedRows.map(() => this.selectAll);
-
         },
         async loadClassroomsData(){
             let data = this.appStore.getClassrooms
@@ -109,7 +96,10 @@ export default {
             this.rows = data
             this.selectedRows = new Array(data.length).fill(false)
         },
-
+        applyFilter(data){
+            if (data.length > 0) this.rows = data
+            else this.loadClassroomsData()
+        },
         openPopup(componentName, props) {
             if (componentName === 'updateClassroom') this.popupComponent = UpdateClassroomPage
             if (componentName === 'createClassroom') this.popupComponent = AddClassroomPage
@@ -144,10 +134,14 @@ export default {
     display: flex;
 }
 
-.action {
+
+.addClassroom {
     position: relative;
     padding: 10px 20px;
     box-shadow: var(--shadow);
+    margin-left: auto;
+    background: var(--success-green);
+    color: var(--cool-white);
     display: flex;
     --svg-width: 15px;
     --svg-height: 15px;
@@ -156,34 +150,10 @@ export default {
     cursor: pointer;
 }
 
-.action p {
+.addClassroom p {
     font-size: 2.5em;
     font-weight: 600;
     margin-right: 5px;
-}
-
-.actionOptions {
-    position: absolute;
-    top: 100%;
-    left: 0px;
-    width: 150px;
-    height: fit-content;
-    background: var(--cool-white);
-    border: 1px var(--soft-gray) solid;
-    display: none;
-}
-
-.actionOptions p {
-    width: 96%;
-    padding: 5px 2%;
-    color: var(--text-light)
-}
-
-
-.addClassroom {
-    margin-left: auto;
-    background: var(--success-green);
-    color: var(--cool-white)
 }
 
 

@@ -119,9 +119,10 @@ body{
 .blank header{
     font-size: 7em;
 }
-.blank input{
+.blank .searchBox{
   margin-top: 35px;
   width: 60%;
+  color: var(--text-normal)
 }
 
 
@@ -135,5 +136,9 @@ body{
   box-shadow: 0px 2px 2px 2px var(--soft-gray);
   border-radius: 5px;
   cursor: pointer;
+}
+
+.formInputerror{
+  border: 1px var(--bright-red) solid !important;
 }
 </style>
