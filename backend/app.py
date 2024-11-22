@@ -13,7 +13,11 @@ jwt = JWTManager(app)
 CORS(app)
 
 from blueprints.classrooms import classroom
+from blueprints.teachers import teacher
+from blueprints.students import student
 app.register_blueprint(classroom)
+app.register_blueprint(teacher)
+app.register_blueprint(student)
 
 
 """

@@ -10,6 +10,9 @@ class Student(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
+    phone = Column(String)
+    gender = Column(String)
+    guardian = Column(String) 
     grade_level = Column(String)
     
     # Relationship with classrooms
@@ -20,6 +23,10 @@ class Student(Base):
             return {
                 "id": self.id,
                 "name": self.name,
+                "email": self.email,
+                "phone": self.phone,
+                "gender": self.gender,
+                "guardian": self.guardian,
                 "grade_level": self.grade_level
             }
         else:
@@ -27,6 +34,9 @@ class Student(Base):
                 "id": self.id,
                 "name": self.name,
                 "email": self.email,
+                "phone": self.phone,
+                "gender": self.gender,
+                "guardian": self.guardian,
                 "grade_level": self.grade_level,
                 "classrooms": [classroom.name for classroom in self.classrooms],
             }

@@ -9,9 +9,11 @@ class Teacher(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
+    honorific = Column(String)
     email = Column(String, unique=True, nullable=False)
-    homeroom = relationship('Classroom', back_populates="homeroom_teacher")
     phone = Column(String)
+    position = Column(String)
+    homeroom = relationship('Classroom', back_populates="homeroom_teacher")
     
     # Relationship with classrooms
     classrooms = relationship("Classroom", secondary=classroom_teacher, back_populates="teachers")
@@ -20,15 +22,19 @@ class Teacher(Base):
         if overview:
             return {
                 "id": self.id,
+                "honorific": self.honorific,
                 "name": self.name,
                 "email": self.email,
                 "phone": self.phone,
+                "position": self.position
             }
         else:
             return {
                 "id": self.id,
+                "honorific": self.honorific,
                 "name": self.name,
                 "email": self.email,
                 "phone": self.phone,
+                "position": self.position,
                 "classrooms": [classroom.name for classroom in self.classrooms],
             }

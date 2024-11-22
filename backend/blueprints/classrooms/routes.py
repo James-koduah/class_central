@@ -13,7 +13,7 @@ def classrooms():
     """
     if request.method == 'GET':
         with Control.start_session() as session:
-            classrooms = session.query(Classroom).all()
+            classrooms = session.query(Classroom).order_by(Classroom.name).all()
             response = [classroom.to_dict(overview=True) for classroom in classrooms]
             return resp(True, data=response)
         
