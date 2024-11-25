@@ -1,7 +1,6 @@
-from sqlalchemy import String, Column, Integer
+from sqlalchemy import ForeignKey, String, Column, Integer
 from sqlalchemy.orm import relationship
 from db_engine.db import Base
-from db_engine.classroom import classroom_course
 
 # Course class
 class Course(Base):
@@ -11,8 +10,10 @@ class Course(Base):
     name = Column(String, nullable=False)
     description = Column(String)
     
-    # Relationship with classrooms
-    classrooms = relationship("Classroom", secondary=classroom_course, back_populates="courses")
+    teacher = relationship("Teacher", back_populates="subjects")
+    teacher_id = Column(Integer, ForeignKey('teachers.id'))
+    classroom_id = Column(Integer, ForeignKey('classrooms.id'))
+    classroom = relationship("Classroom", back_populates="courses")
     
     def to_dict(self, overview=False):
         if overview:
@@ -20,6 +21,8 @@ class Course(Base):
                 "id": self.id,
                 "name": self.name,
                 "description": self.description,
+                "teacher": self.teacher.name,
+                "classroom": self.classroom.name
             }
         else:
             return {

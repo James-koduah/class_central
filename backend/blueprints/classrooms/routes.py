@@ -40,8 +40,7 @@ def new_classroom():
             if not homeroom_teacher:
                 return resp(False, message="No such Teacher Exists in the database")
         
-        classroom_obj = Classroom()
-        classroom_obj.update(
+        classroom_obj = Classroom(
             name=name,
             homeroom_teacher=homeroom_teacher
         )
@@ -67,7 +66,7 @@ def update_classroom():
         
         # Check if the new name we want to give the classroom already exists
         check = session.query(Classroom).filter(Classroom.name==name).first()
-        if check:
+        if check and check.name != classroom.name:
             return resp(False, message="A Classroom with this name already exists")
         
         # If the teacher id is specified, check if Teacher exists and assign to classroom. Else Teacher is None.

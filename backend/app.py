@@ -15,9 +15,11 @@ CORS(app)
 from blueprints.classrooms import classroom
 from blueprints.teachers import teacher
 from blueprints.students import student
+from blueprints.courses import course
 app.register_blueprint(classroom)
 app.register_blueprint(teacher)
 app.register_blueprint(student)
+app.register_blueprint(course)
 
 
 """

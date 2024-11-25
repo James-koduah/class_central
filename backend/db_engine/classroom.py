@@ -18,13 +18,6 @@ classroom_student = Table(
     Column("student_id", Integer, ForeignKey("students.id"), primary_key=True)
 )
 
-classroom_course = Table(
-    "classroom_course",
-    Base.metadata,
-    Column("classroom_id", Integer, ForeignKey("classrooms.id"), primary_key=True),
-    Column("course_id", Integer, ForeignKey("courses.id"), primary_key=True)
-)   
-
 
 class Classroom(Base):
     __tablename__ = "classrooms"
@@ -36,12 +29,11 @@ class Classroom(Base):
     homeroom_teacher = relationship("Teacher", back_populates="homeroom", uselist=False)
     teachers = relationship("Teacher", secondary=classroom_teacher, back_populates="classrooms")
     students = relationship("Student", secondary=classroom_student, back_populates="classrooms")
-    courses = relationship("Course", secondary=classroom_course, back_populates="classrooms")
+    courses =  relationship('Course', back_populates="classroom")
+    
     
     def update(self, *args, **kwargs):
         for k, v in kwargs.items():
-            if k == 'homeroom_teacher':
-                self.homeroom_teacher_id = v.id if v else None
             setattr(self, k, v)
     
     def to_dict(self, overview=False):

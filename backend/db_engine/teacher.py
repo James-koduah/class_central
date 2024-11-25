@@ -15,7 +15,7 @@ class Teacher(Base):
     position = Column(String)
     homeroom = relationship('Classroom', back_populates="homeroom_teacher")
     
-    # Relationship with classrooms
+    subjects = relationship('Course', back_populates="teacher")
     classrooms = relationship("Classroom", secondary=classroom_teacher, back_populates="teachers")
     
     def to_dict(self, overview=False):
@@ -26,6 +26,7 @@ class Teacher(Base):
                 "name": self.name,
                 "email": self.email,
                 "phone": self.phone,
+                "subjects": len(self.subjects),
                 "position": self.position
             }
         else:
@@ -36,5 +37,6 @@ class Teacher(Base):
                 "email": self.email,
                 "phone": self.phone,
                 "position": self.position,
+                "subjects": [subject.name for subject in self.subjects],
                 "classrooms": [classroom.name for classroom in self.classrooms],
             }
