@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="blank">
-            <header>Teachers Management</header>
+            <header>Course Management</header>
             <div class="searchBox">
-                <Search :searchFunction="appStore.teachersSearch"  @filteredItems="applyFilter" placeholder="Search Teachers Database" />
+                <Search :searchFunction="appStore.teachersSearch"  @filteredItems="applyFilter" placeholder="Search Courses Database" />
             </div>
         </div>
         <div class="database">
@@ -11,8 +11,8 @@
                 <DropdownButton header="Actions" :options="['Delete']" @selected="" />
                 <DropdownButton header="Sort By" icon="sort" :options="['Students No. Assending', 'Student No. Decending']" />
 
-                <div class="action addClassroom" @click="openPopup('createTeacher', {})" @selected="" >
-                    <p>Add New Teacher</p>
+                <div class="action addClassroom" @click="openPopup('createCourse', {})" @selected="" >
+                    <p>Add New Course</p>
                     <SvgIcons icon="add" color="#000" />
                 </div>
 
@@ -29,12 +29,11 @@
                     <tbody>
                         <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
                             <td><input type="checkbox" v-model="selectedRows[rowIndex]" /></td>
-                            <td>{{row.honorific}}. {{ row.name }}</td>
-                            <td>{{ row.email }}</td>
-                            <td>{{ row.phone }}</td>
-                            <td>{{ row.subjects }}</td>
-                            <td>{{ row.position ? row.position : '-'  }}</td>
-                            <td><div class="rowActions"  @click="openPopup('updateTeacher', {id: row.id})"><SvgIcons icon="menu2" color='#000' /></div></td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.classroom }}</td>
+                            <td>{{ row.teacher }}</td>
+                            <td>{{ row.students ? row.students :  '0' }}</td>
+                            <td><div class="rowActions"  @click="openPopup('updateCourse', {id: row.id})"><SvgIcons icon="menu2" color='#000' /></div></td>
                         </tr>
                     </tbody>
                 </table>
@@ -50,9 +49,9 @@ import { useAppStore } from '@/store/appStore';
 import SvgIcons from '@/components/utils/SvgIcons.vue';
 import Search from '@/components/utils/Search.vue';
 import DropdownButton from '@/components/utils/DropdownButton.vue';
-import AddTeacherPage from './addteacher/AddTeacherPage.vue';
-import UpdateTeacherPage from './updateteacher/UpdateTeacherPage.vue';
 import Popup from '@/components/utils/Popup.vue';
+import AddCoursePage from './addcourse/AddCoursePage.vue';
+import UpdateCoursePage from './updatecourse/UpdateCoursePage.vue';
 
 export default {
     components: {
@@ -60,8 +59,8 @@ export default {
         Search,
         Popup,
         DropdownButton,
-        AddTeacherPage,
-        UpdateTeacherPage
+        AddCoursePage,
+        UpdateCoursePage
     },
     setup(){
         return {
@@ -70,7 +69,7 @@ export default {
     },
     data() {
         return {
-            headers: ['Name', 'Email', 'Phone Number', 'Subjects Teaching', 'Position'],
+            headers: ['Name', 'Classroom', 'Teacher', 'Students Learning'],
             rows: [],
             selectedRows: [],
             selectAll: false,
@@ -83,21 +82,22 @@ export default {
         toggleSelectAll() {
             this.selectedRows = this.selectedRows.map(() => this.selectAll);
         },
-        async loadTeachersData(){
-            let data = this.appStore.getTeachers
+        async loadCourses(){
+            let data = this.appStore.getCourses
             if (data === false){
-                data = await this.appStore.fetchTeachers()
+                data = await this.appStore.fetchCourses()
             }
             this.rows = data
             this.selectedRows = new Array(data.length).fill(false)
         },
+        
         applyFilter(data){
             if (data.length > 0) this.rows = data
-            else this.loadTeachersData()
+            else this.loadCourses()
         },
         openPopup(componentName, props) {
-            if (componentName === 'updateTeacher') this.popupComponent = UpdateTeacherPage
-            if (componentName === 'createTeacher') this.popupComponent = AddTeacherPage
+            if (componentName === 'updateCourse') this.popupComponent = UpdateCoursePage
+            if (componentName === 'createCourse') this.popupComponent = AddCoursePage
             this.popupProps = props;
             this.isPopupVisible = true;
         },
@@ -108,7 +108,7 @@ export default {
         },
     },
     mounted(){
-        this.loadTeachersData()
+        this.loadCourses()
     }
 
 }

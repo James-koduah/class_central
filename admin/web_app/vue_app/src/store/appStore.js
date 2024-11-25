@@ -6,7 +6,8 @@ export const useAppStore = defineStore('appStore', {
   state: () => ({
     classrooms: false,
     teachers: false,
-    students: false
+    students: false,
+    courses: false
   }),
 
   actions: {
@@ -40,6 +41,13 @@ export const useAppStore = defineStore('appStore', {
       });
       return res
     },
+    async loadClassroomsData(){
+      if (this.classrooms == false){
+          await this.fetchClassrooms()
+      }
+      return this.classrooms
+    },
+
 
     async fetchTeachers(){
       const response = await apiClient.get('/teachers')
@@ -71,6 +79,14 @@ export const useAppStore = defineStore('appStore', {
       });
       return res
     },
+    async loadTeachersData(){
+      if (this.teachers == false){
+          await this.fetchTeachers()
+      }
+      return this.teachers
+    },
+
+    
 
     async fetchStudents(){
       const response = await apiClient.get('/students')
@@ -103,12 +119,46 @@ export const useAppStore = defineStore('appStore', {
       return res
     },
 
+    
+
+    async fetchCourses(){
+      const response = await apiClient.get('/courses')
+      if (response.data.status){
+        this.courses = response.data.data
+      }else{
+        console.log(response.data)
+        this.courses = false
+      }
+      return this.courses
+    },
+    findCourse(id){
+      return this.courses.find(course => course.id === id)
+    },
+    coursesSearch(query = '') {
+      if (query === '' || !this.courses) return []
+      query = query.toLowerCase()
+      let res = this.courses.filter(item => item.name.toLowerCase().includes(query))
+      .map(item => {
+          const searchDisplayText = item.name.replace(
+              new RegExp(`(${query})`, 'gi'),
+              '<mark>$1</mark>'
+          );
+          return {
+              ...item,
+              searchDisplayText,
+              searchValue: item.id
+          };
+      });
+      return res
+    },
+
   },
 
   getters: {
     getClassrooms: (state) => state.classrooms,
     getTeachers: (state) => state.teachers,
     getStudents: (state) => state.students,
+    getCourses: (state) => state.courses
   },
 
 });

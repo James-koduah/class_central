@@ -1,29 +1,42 @@
 <template>
     <div class="page">
         <div class="mainHeader">
-            <h1>Update Classroom</h1>
-            <button @click="updateClassroom">Update Classroom</button>
+            <h1>Update Course</h1>
+            <button @click="updateCourse">Update Course</button>
         </div>
         <div class="detailsContainer">
             <div class="detailsInfo">
                 <div class="infoBox">
-                    <h2>Update Information</h2>
+                    <h2>Enter Information</h2>
                     <div class="infoItem">
-                        <p>Classroom Name</p>
+                        <p>Course Name</p>
                         <input type="text" v-model="name">
                     </div>
+
                     <div class="infoItem">
-                        <p>Select Homeroom Teacher</p>
-                        <div @click="openPopup('SelectTeacher', {})"  class="shaded">{{ homeroomTeacher }}</div>
-                        <button @click="openPopup('SelectTeacher', {})"  >Select</button>
+                        <p>Course Description</p>
+                        <input type="text" v-model="description">
                     </div>
+
+                    <div class="infoItem">
+                        <p>Select Classroom</p>
+                        <div @click="openPopup('SelectClassroom', {})" class="shaded">{{ classroomName }}</div>
+                        <button @click="openPopup('SelectClassroom', {})">Select</button>
+                    </div>
+
+                    <div class="infoItem">
+                        <p>Select Teacher</p>
+                        <div @click="openPopup('SelectTeacher', {})" class="shaded">{{ teacherName }}</div>
+                        <button @click="openPopup('SelectTeacher', {})">Select</button>
+                    </div>
+
                 </div>
             </div>
         </div>
         <Popup 
         :isVisible="isPopupVisible" 
-        :currentComponent="popupComponent"
-        :componentData="popupProps"    
+        :currentComponent="popupComponent" 
+        :componentData="popupProps"
         @update:isVisible="isPopupVisible = $event" 
         @event="managePopupEvent"
         />
@@ -32,52 +45,64 @@
 <script>
 import Popup from '@/components/utils/Popup.vue';
 import SvgIcons from '@/components/utils/SvgIcons.vue';
-import SelectTeacher from '../../../utils/SelectTeacher.vue';
-import { useAppStore } from '@/store/appStore';
 import apiClient from '@/axios';
 import PopupMessage from '@/components/utils/PopupMessage.vue';
+import SelectTeacher from '@/components/utils/SelectTeacher.vue';
+import SelectClassroom from '@/components/utils/SelectClassroom.vue';
+import { useAppStore } from '@/store/appStore';
+
 
 export default {
-    props: {
-        data: Object
-    },
     setup() {
         return {
             appStore: useAppStore()
         }
     },
+    props: {
+        data: Object
+    },
     components: {
         SvgIcons,
         Popup,
+        PopupMessage,
         SelectTeacher,
-        PopupMessage
+        SelectClassroom
     },
     data() {
         return {
+            course_id: null,
             name: '',
-            homeroomTeacher: '',
-            homeroom_teacher_id: null,
-            classroom_details: null,
+            description: '',
+            teacherName: null,
+            teacher_id: null,
+            classroomName: null,
+            classroom_id: null,
+            course_details: null,
+
             isPopupVisible: false,
             popupComponent: null,
-            popupProps: {}
+            popupProps: {},
         }
     },
     methods: {
         openPopup(componentName, props) {
             if (componentName === 'SelectTeacher') this.popupComponent = SelectTeacher
+            if (componentName === 'SelectClassroom') this.popupComponent = SelectClassroom
             if (componentName === 'popupMessage') this.popupComponent = PopupMessage
             this.popupProps = props;
             this.isPopupVisible = true;
         },
-        async updateClassroom(){
-            const response = await apiClient.post('/classrooms/update_classroom', {
-                classroom_id: this.classroom_details.id,
+        async updateCourse() {
+            const response = await apiClient.post('/courses/update_course', {
+                course_id: this.course_details.id,
                 name: this.name,
-                homeroom_teacher_id: this.homeroom_teacher_id
+                description: this.description,
+                teacher_id: this.teacher_id,
+                classroom_id: this.classroom_id
             })
-            if (response.data.status) window.location.reload()
-            else {
+            if (response.data.status) {
+                window.location.reload()
+            }else {
                 const info = {
                     type: 'error', 
                     header:'Process Failed', 
@@ -89,15 +114,21 @@ export default {
         managePopupEvent(data){
             this.isPopupVisible = false
             if (data.source == 'selectTeacher'){
-                this.homeroom_teacher_id = data.data.id,
-                this.homeroomTeacher = data.data.name
+                this.teacher_id = data.data.id,
+                this.teacherName = data.data.name
+            }
+            if (data.source == 'selectClassroom'){
+                this.classroom_id = data.data.id,
+                this.classroomName = data.data.name
             }
         }
     },
     mounted(){
-        this.classroom_details = this.appStore.findClassroom(this.data.id)
-        this.name = this.classroom_details.name
-        this.homeroomTeacher = this.classroom_details.homeroom_teacher
+        this.course_details = this.appStore.findCourse(this.data.id)
+        this.name = this.course_details.name
+        this.description = this.course_details.description
+        this.teacherName = this.course_details.teacher
+        this.classroomName = this.course_details.classroom
     }
 }
 </script>
@@ -194,7 +225,7 @@ h3 {
     border-radius: 3px;
 }
 
-.shaded{
+.shaded {
     width: 96%;
     padding: 0 2%;
     height: 35px;

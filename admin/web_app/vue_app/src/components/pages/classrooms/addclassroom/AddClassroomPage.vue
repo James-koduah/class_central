@@ -14,7 +14,7 @@
                     </div>
                     <div class="infoItem">
                         <p>Select Homeroom Teacher</p>
-                        <div class="shaded"></div>
+                        <div @click="openPopup('SelectTeacher', {})" class="shaded">{{ homeroomTeacher }}</div>
                         <button @click="openPopup('SelectTeacher', {})">Select</button>
                     </div>
                 </div>
@@ -25,13 +25,14 @@
         :currentComponent="popupComponent" 
         :componentData="popupProps"
         @update:isVisible="isPopupVisible = $event" 
+        @event="managePopupEvent"
         />
     </div>
 </template>
 <script>
 import Popup from '@/components/utils/Popup.vue';
 import SvgIcons from '@/components/utils/SvgIcons.vue';
-import SelectTeacher from '../SelectTeacher.vue';
+import SelectTeacher from '../../../utils/SelectTeacher.vue';
 import apiClient from '@/axios';
 import PopupMessage from '@/components/utils/PopupMessage.vue';
 
@@ -50,6 +51,8 @@ export default {
         return {
             name: '',
             isPopupVisible: false,
+            homeroomTeacher: '',
+            homeroom_teacher_id: null,
             popupComponent: null,
             popupProps: {},
         }
@@ -64,7 +67,7 @@ export default {
         async createClassroom() {
             const response = await apiClient.post('/classrooms/new_classroom', {
                 name: this.name,
-                homeroom_teacher_id: null
+                homeroom_teacher_id: this.homeroom_teacher_id
             })
             if (response.data.status) {
                 window.location.reload()
@@ -75,6 +78,13 @@ export default {
                     message: response.data.message
                 }
                 this.openPopup('popupMessage', info)
+            }
+        },
+        managePopupEvent(data){
+            this.isPopupVisible = false
+            if (data.source == 'selectTeacher'){
+                this.homeroom_teacher_id = data.data.id,
+                this.homeroomTeacher = data.data.name
             }
         }
     }

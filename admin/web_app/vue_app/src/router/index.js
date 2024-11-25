@@ -3,6 +3,7 @@ import DashboardPage from '@/components/pages/dashboard/DashboardPage.vue';
 import ClassroomMain from '@/components/pages/classrooms/ClassroomMain.vue';
 import TeachersMain from '@/components/pages/teachers/teachersMain.vue';
 import StudentsMain from '@/components/pages/students/StudentsMain.vue';
+import CourseMain from '@/components/pages/courses/CourseMain.vue';
 
 
 const router = createRouter({
@@ -22,6 +23,11 @@ const router = createRouter({
             path: '/teachers',
             name: "TeachersMain",
             component: TeachersMain
+        },
+        {
+            path: '/courses',
+            name: 'CourseMain',
+            component: CourseMain
         },
         {
             path: '/students',

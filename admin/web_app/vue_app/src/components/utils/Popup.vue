@@ -3,7 +3,7 @@
         <div class="closeDiv" @click="closePopup"></div>
         <div class="popup-content slideup" ref="content">
             <div @click="closePopup" class="closeButton"><SvgIcons icon="close" color="#000" />  </div>
-            <component :is="currentComponent" :data="componentData" />
+            <component :is="currentComponent" :data="componentData" @event="transmitEvent" />
         </div>
         
     </div>
@@ -36,8 +36,10 @@ export default {
             this.$refs.overlay.classList.add('fadeout')
             setTimeout(() => {
                 this.$emit('update:isVisible', false);
-            }, 300);
-            
+            }, 300);   
+        },
+        transmitEvent(args={}){
+            this.$emit('event', args)
         }
     },
     mounted(){

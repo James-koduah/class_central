@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <input id="searchInput" type="text" :placeholder="placeholder" v-model="searchString" @input="runSearch" >
+        <input id="searchInput" type="text" :placeholder="placeholder" v-model="searchString" @input="runSearch" ref="input" >
         <div class="suggestions" v-if="dropdown && suggestions.length > 0">
             <p v-for="(item, index) in suggestions" :key="index" v-html="item.searchDisplayText" @click="emitOption([item])" ></p>
         </div>
@@ -23,6 +23,10 @@ export default {
         liveUpdate: { // When true, each input into the search bar will transmit the results to the parent
             type: Boolean,
             default: true
+        },
+        activeStart: {
+            type: Boolean, // When true, on mount the input becomes active
+            default: false
         }
     },
     data(){
@@ -42,6 +46,11 @@ export default {
             this.$emit('filteredItems', value)
         }
     },
+    mounted() {
+        if (this.activeStart){
+            this.$refs.input.focus()
+        }
+    }
     
 }
 </script>
